@@ -10,10 +10,6 @@ The interface to wikipedia is designed to meet many different requirements.  On 
 
 The enhancements in this extension are for the reader.  They are designed to increase readability, remove distraction and create an experience where the reader may focus on the topic at hand and come away with a feeling of clarity.
 
-## Features
-
-For a complete list of features and the rationale behind them, please refer to [DCXN Lab page for Wikipedia Reader][DCXN Lab Page]
-
 ## Inspiration
 
 [![The Shallows By Nicholas Carr][The Shallows Image]][The Shallows Amazon Link]
@@ -31,7 +27,6 @@ Readable Wikipedia is by [Nick Rowe][Nick's Homepage]
 
 
 [Nick's Homepage]: http://dcxn.com
-[DCXN Lab Page]: http://labs.dcxn.com/wikipedia
 [Chrome Store Link]: http://chrome.com
 [Example Screenshot]: https://github.com/nixterrimus/readable-wikipedia/raw/master/example-screenshot.png
 [The Shallows Amazon Link]: http://www.amazon.com/gp/product/0393339750/ref=as_li_qf_sp_asin_il?ie=UTF8&camp=1789&creative=9325&creativeASIN=0393339750&linkCode=as2&tag=d081a-20
