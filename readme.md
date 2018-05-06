@@ -7,6 +7,8 @@ prettfy wikipedia: move toc to side,etc make it easier to read
 
 modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v 1.0
 
+![](/js_wiki.png)
+
 --- 
 # Readable Wikipedia
 
