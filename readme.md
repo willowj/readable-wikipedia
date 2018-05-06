@@ -1,9 +1,9 @@
 
 
 
-# Wikipedia_prettfy js on Tampermonkey
+# Wikipedia prettfy js on Tampermonkey
 
-prettfy wikipedia: move toc to side,etc make it easier to read
+prettfy wikipedia: move toc to side,etc. Make it easier to read
 
 modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v 1.0
 
