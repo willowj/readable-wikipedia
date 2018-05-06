@@ -5,11 +5,18 @@
 
 prettfy wikipedia: move toc to side,etc. Make it easier to read
 
-modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v 1.0
+install : https://greasyfork.org/zh-CN/scripts/367587-wikipedia-toc
+
+
 
 ![](/js_wiki.png)
 
+modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v 1.0
+
 --- 
+- Originator : (not need to read for user)
+--- 
+---
 # Readable Wikipedia
 
 This is a Chrome extension to bring increased readability to wikipedia.
