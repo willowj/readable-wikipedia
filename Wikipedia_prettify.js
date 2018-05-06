@@ -1,14 +1,12 @@
 // ==UserScript==
-// @name        Readable Wikipedia
-// @description Makes wikipedia easier to read (smaller line length, cleaner). See https://github.com/nixterrimus/readable-wikipedia.
-// @namespace   https://github.com/nixterrimus/readable-wikipedia
+// @name        Wikipedia_prettfy
+// @description prettfy wikipedia move toc to side,etc make it easier to read
+// @namespace   https://github.com/willowj/readable-wikipedia
 // @include     http*://*.wikipedia.org/**
 // @version     1.0
-// @grant       GM_addStyle
-// @grant       GM_getResourceText
+// @grant       Adam willow
+// modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v1
 // ==/UserScript==
-
-// @resource    readableWikipediaCss https://raw.github.com/nixterrimus/readable-wikipedia/master/readable.css
 
 function GM_addStyle_from_string(str) {
     var node = document.createElement('style');
@@ -21,52 +19,50 @@ function GM_addStyle_from_string(str) {
 var cssSrc = `
 /* Base Wikipedia Enhancement */
 
-a, a:visited {
-  text-decoration: none !important;
-  color: black !important;
+
+body{
+    background: none !important;
 }
 
+a:visited {
+  color: #948af5 !important;
+}
+a {
+  color: #063b92;
+}
 .reference {
-  display: none !important;
+/*  display: none !important;*/
 }
 
 .internal {
-  display: none !important;
+  /*display: none !important;*/
 }
 
-#mw-panel {
-  display: none !important;
-}
 
-#mw-head {
-  margin: 0 auto !important;
-  background-color: white !important;
-  border-bottom: 1px solid #AAA !important;
-  padding-bottom: 13px !important;
-}
+
 
 #mw-head-base {
   background-image: none !important;
 }
 
-div#content {
-  width: 800px !important;
-  margin: 0 auto !important;
-  background: none !important;
-  padding: 4.25em 1.5em 1.5em 1.5em !important;
-  border: none !important;
-}
 
 .infobox th {
-  background-color: rgb(95, 95, 95) !important;
-  color: white !important;
-  font-weight: normal !imporant;
+  background-color: #e6e0c8 !important;
+  /*font-weight: normal !imporant;*/
 }
 
-.infobox th a {
+/*.infobox th a {
   color: white !important;
   font-weight: normal !imporant;
+}*/
+
+table.infobox {
+    border-spacing: 3px;
+    text-align: left;
+    font-size: small;
+    line-height: 1.5em;
 }
+
 
 #siteNotice {
   display: none !important;
@@ -89,7 +85,7 @@ h2 {
 }
 
 .catlinks {
-  display: none !important;
+  /*display: none !important;*/
 }
 
 .Template-Fact {
@@ -114,20 +110,30 @@ div#content a.external {
 }
 
 #p-personal {
-  display: none !important;
+  display: inherit !important;
 }
 
 #left-navigation {
-  display: none !important;
+  margin-left: 20%;
+  margin-top: 0px;
 }
 
 #right-navigation {
-  margin-top: 0px !important;
+  margin-top: 20px !important;
 }
 
 #p-views {
   display: none !important;
 }
+
+#mw-panel {
+    font-size: inherit;
+    position: unset;
+    top: 0;
+    width: 10em;
+    left: 0;
+}
+
 
 #mw-body {
   margin-left: 0px !important;
@@ -151,10 +157,7 @@ div#content a.external {
 
 #footer {
   text-align: center !important;
-  background: none !important;
-  margin: 0 0 !important;
-  background-color: white !important;
-  border-top: 1px solid #AAA !important;
+  border-top: 1px solid grey !important;
 }
 
 #footer-places {
@@ -176,7 +179,28 @@ div#content a.external {
 */
 
 #toc {
-  display: none !important;
+    position: fixed;
+    margin-left: 0px;
+    font-size: 13px;
+    top: 0%;
+    overflow: auto;
+    height: 100%;
+    display: inline-block;
+    z-index: 1;
+    background: beige ;
+    border: 0px;
+}
+.toc ul ul {
+    margin: 0 0 0 1em;
+}
+.toc>ul{
+    margin-bottom: 2em;
+    margin-left:5%;
+}
+
+.tocnumber, .toctext {
+    display: table-cell;
+    text-decoration: blink;
 }
 
 /* Reading Enhacements */
@@ -186,21 +210,17 @@ div#content a.external {
 }
 
 p {
-  font-size: 1.2em !important;
-  margin-top: 1.4em !important;
+  font-size: 1em !important;
+  margin-top: 1em !important;
 }
 
 /* File Enhancements */
 
 
-#filetoc {
-  display: none !important;
-}
-
-#file img {
+/*#file img {
   width: 100% !important;
   height: auto !important;
-}
+}*/
 
 .fullMedia, .sharedUploadNotice, #mw-imagepage-section-linkstoimage, #filelinks, #mw-imagepage-section-filehistory, #filehistory, #mw-imagepage-section-globalusage, #globalusage, #mw-imagepage-content, #template-picture-of-the-day, #metadata, .mw-imagepage-section-metadata, .mw-filepage-resolutioninfo {
   display: none !important;
@@ -215,6 +235,8 @@ p {
   color: #2B77BD !important;
 }
 
+
+
 #enhancement_credit {
   font-size: 12px !important;
 }
@@ -228,14 +250,29 @@ p {
 }
 
 /* Responsive breakpoints */
+@media screen and (min-width: 1200px) {
 
-@media screen and (max-width: 850px) {
+    div#content{
+        margin-left: 15% !important;
+        padding-left: 3em !important;
+        padding-right: 5em !important;
+    }
+    .toc{
+        width: 13%;
+    }
+
+}
+@media screen and (max-width: 1200px) {
   div#content {
-    width: 600px !important;
+    width: 73% !important;
+    margin-left: 20%;
+  }
+  #toc{
+     width: 15%;
   }
   .thumb, .tright, .left {
     display: block !important;
-    float: none !important;
+ /*   float: none !important;*/
   }
   #mw-articlefeedbackv5 {
     display: none !important;
@@ -244,7 +281,26 @@ p {
 
 @media screen and (max-width: 650px) {
   div#content {
-    width: 320px !important;
+    margin-left: 2%;
+    width: 90% !important;
+    padding-top: 1em !important
+    background: none !important;
+    padding: 4.25em 1.5em 1.5em 1.5em !important;
+    border: none !important;
+  }
+  table.infobox{
+    width:90% !important;
+  }
+  .toc{
+    width: 90% !important;
+    position : relative !important;
+    height : auto !important;
+    margin-left: 5% !important;
+    top : 5em !important
+  }
+  #mw-panel{
+    display :none !important;
+
   }
   #firstHeading {
     width: 100% !important;
@@ -267,12 +323,69 @@ p {
 
 /* MY CODE */
 
-   body{-webkit-hyphens:auto;-moz-hyphens:auto;-ms-hyphens:auto;-o-hyphens:auto;hyphens:auto; text-align:justify}
-   a, a:visited {color: rgb(43, 119, 189) !important}
-   #mw-head {display: none}
-   div#content {width: 600px !important; padding-top: 1em !important}
 
+div#content {
+   padding-top: 1em !important;
+   margin-top: 3em;
+   border: none;
+}
+
+.toc::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+}
+
+/* 设置滚动条的滑轨 */
+.toc::-webkit-scrollbar-track {
+      /*background-color: #ddd;*/
+}
+
+/* 滑块 */
+.toc::-webkit-scrollbar-thumb {
+    background-color: #54595d;
+    border-radius: 4px;
+}
+
+ /* 滑轨两头的监听按钮 */
+.toc::-webkit-scrollbar-button {
+    background-color: #888;
+    display: none;
 `;
 
 GM_addStyle_from_string(cssSrc);
-document.getElementById("References").parentNode.nextSibling.nextSibling.style.display = "none" 
+//document.getElementById("References").parentNode.nextSibling.nextSibling.style.display = "none";
+var toc = document.querySelector('#toc');
+if (toc == null){
+    var toc = document.createElement('div');
+    toc.setAttribute('id', 'toc');
+    toc.setAttribute('class', 'toc');
+}
+document.body.insertBefore(toc, document.body.firstElementChild);
+
+var pg = document.querySelector('#mw-panel');
+document.querySelector('#toc').appendChild(pg);
+
+
+/*toc toggle*/
+if ( !document.querySelector("#toc .toctoggle")) {
+    var tog = document.createElement('span');
+    document.querySelector("#toc .toctitle").appendChild(tog);
+    tog.outerHTML = `<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">隐藏</a>]&nbsp;</span>`;
+}
+
+var tog = document.querySelector("#toc .toctitle .togglelink");
+
+var ul = document.querySelector("#toc>ul");
+tog.addEventListener("click", function () {
+    if (ul.style.display === 'none'){
+        ul.style.display = 'block';
+    }else{
+        ul.style.display = 'none';
+    }
+
+    var tog_ ={"hide":"show","show":"hide", "隐藏":"显示","显示":'隐藏'};
+    tog.text = tog_[tog.text];
+});
+if (document.body.offsetWidth <= 650){
+    tog.click();
+}
