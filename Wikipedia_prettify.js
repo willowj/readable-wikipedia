@@ -3,7 +3,9 @@
 // @description prettfy wikipedia move toc to side,etc make it easier to read
 // @namespace   https://github.com/willowj/readable-wikipedia
 // @include     http*://*.wikipedia.org/**
-// @version     1.0
+// @include     http*://*.wikinews.org/**
+// @include     http*://*.wikisource.org/**
+// @version     1.2
 // @grant       Adam willow
 // modified from https://greasyfork.org/zh-CN/scripts/35198-readable-wikipedia/code v1
 // ==/UserScript==
@@ -19,6 +21,12 @@ function GM_addStyle_from_string(str) {
 var cssSrc = `
 /* Base Wikipedia Enhancement */
 
+#firstHeading {
+    font-weight: bolder !important;
+    padding: 0.6em !important;
+    font-size: xx-large !important;
+  }
+
 
 body{
     background: none !important;
@@ -27,8 +35,12 @@ body{
 a:visited {
   color: #948af5 !important;
 }
+
 a {
   color: #063b92;
+}
+.toc>ul a {
+    color: black;
 }
 .reference {
 /*  display: none !important;*/
@@ -61,15 +73,26 @@ table.infobox {
     text-align: left;
     font-size: small;
     line-height: 1.5em;
+    border-collapse: collapse;
+
+}
+.wikitable{
+    margin: auto !important;
 }
 
-
 #siteNotice {
-  display: none !important;
+    text-align: right;
+    font-size: 6px;
+    margin-left: 50%;
+    position: absolute;
 }
 
 h2 {
   margin-top: 2em !important;
+}
+
+dl>dd{
+    border-top-style: groove;
 }
 
 #mw-page-base {
@@ -109,17 +132,15 @@ div#content a.external {
   display: none !important;
 }
 
-#p-personal {
-  display: inherit !important;
-}
 
 #left-navigation {
-  margin-left: 20%;
-  margin-top: 0px;
+    margin-left: 20%;
+    margin-top: 0px;
+    font-size: 8px !important;
 }
 
 #right-navigation {
-  margin-top: 20px !important;
+  margin-top: 2em !important;
 }
 
 #p-views {
@@ -138,6 +159,56 @@ div#content a.external {
 #mw-body {
   margin-left: 0px !important;
 }
+
+.mw-body-content h2 {
+    /* font-size: 1.5em; */
+    margin-top: 1em;
+    border-left-style: inset;
+    border-left-width: 0.6em;
+    border-left-color: lightskyblue;
+        padding-left: 0.3em;
+}
+
+.mw-body-content p,ul {
+    line-height: inherit;
+    margin: 0.5em 0;
+    padding-left: 4% !important;
+}
+
+.mw-parser-output li {
+    padding-bottom: 0.6em !important;
+}
+
+
+
+p {
+  font-size: 1em !important;
+  margin-top: 1em !important;
+}
+
+.mw-parser-output>p {
+    letter-spacing: 1px;
+    text-align: justify;
+}
+.mw-parser-output>dl{
+    padding-left: 3em;
+}
+.mw-parser-output>ol{
+    padding-left: 5em;
+}
+.mw-parser-output>h3~ol{
+    padding-left: 1em;
+}
+h2~h3 {
+    padding-left: 0.5em;
+}
+h3~h4 {
+    padding-left: 1em;
+}
+h4~h5 {
+    padding-left: 2em;
+}
+
 
 #protected-icon {
   display: none !important;
@@ -178,7 +249,7 @@ div#content a.external {
  * and might change
 */
 
-#toc {
+div#toc {
     position: fixed;
     margin-left: 0px;
     font-size: 13px;
@@ -189,10 +260,18 @@ div#content a.external {
     z-index: 1;
     background: beige ;
     border: 0px;
+    font-size :0.9em;
 }
 .toc ul ul {
     margin: 0 0 0 1em;
 }
+div#toc>ul li:focus{
+    border-right-style: solid;
+    border-right-color: wheat;
+    font-weight: bolder;
+}
+
+
 .toc>ul{
     margin-bottom: 2em;
     margin-left:5%;
@@ -209,10 +288,6 @@ div#content a.external {
   line-height: 1.7em !important;
 }
 
-p {
-  font-size: 1em !important;
-  margin-top: 1em !important;
-}
 
 /* File Enhancements */
 
@@ -254,20 +329,48 @@ p {
 
     div#content{
         margin-left: 15% !important;
-        padding-left: 3em !important;
-        padding-right: 5em !important;
+        width: 70% !important;
+        padding-left: 5em !important;
+        padding-right: 7em !important;
+
     }
+
+/*      #info_box {
+        position: absolute;
+        margin-left: 80%;
+        margin-top: 10em;
+        z-index: 1;
+
+        border-collapse: collapse;
+      }*/
     .toc{
         width: 13%;
     }
-
+    #p-personal {
+        display: inherit !important;
+        padding-right: 7em !important;
+    }
+    #right-navigation{
+        padding-right: 10% !important;
+            font-size: 8px !important;
+    }
+    #siteNotice{
+        padding-right 10em !important;
+    }
+    .infobox {
+        margin-left: 2em !important;
+        float: right !important;
+        min-width: auto !important;
+        clear: unset !important;
+    }
 }
 @media screen and (max-width: 1200px) {
   div#content {
-    width: 73% !important;
+    width: 72% !important;
     margin-left: 20%;
   }
-  #toc{
+
+  div#toc{
      width: 15%;
   }
   .thumb, .tright, .left {
@@ -277,7 +380,15 @@ p {
   #mw-articlefeedbackv5 {
     display: none !important;
  }
+ .infobox {
+        margin-left: 2em !important;
+        float: right !important;
+        min-width: auto !important;
+        clear: unset !important;
+    }
+
 }
+
 
 @media screen and (max-width: 650px) {
   div#content {
@@ -301,9 +412,6 @@ p {
   #mw-panel{
     display :none !important;
 
-  }
-  #firstHeading {
-    width: 100% !important;
   }
 
   .desktop {
@@ -331,7 +439,7 @@ div#content {
 }
 
 .toc::-webkit-scrollbar{
-    width: 8px;
+    width: 0px;
     height: 8px;
 }
 
@@ -341,10 +449,10 @@ div#content {
 }
 
 /* 滑块 */
-.toc::-webkit-scrollbar-thumb {
+/*.toc::-webkit-scrollbar-thumb {
     background-color: #54595d;
     border-radius: 4px;
-}
+}*/
 
  /* 滑轨两头的监听按钮 */
 .toc::-webkit-scrollbar-button {
@@ -354,8 +462,8 @@ div#content {
 
 GM_addStyle_from_string(cssSrc);
 //document.getElementById("References").parentNode.nextSibling.nextSibling.style.display = "none";
-var toc = document.querySelector('#toc');
-if (toc == null){
+var toc = document.querySelector('div#toc');
+if (toc == null) {
     var toc = document.createElement('div');
     toc.setAttribute('id', 'toc');
     toc.setAttribute('class', 'toc');
@@ -367,25 +475,84 @@ document.querySelector('#toc').appendChild(pg);
 
 
 /*toc toggle*/
-if ( !document.querySelector("#toc .toctoggle")) {
+if (!document.querySelector("#toc .toctoggle")) {
     var tog = document.createElement('span');
     document.querySelector("#toc .toctitle").appendChild(tog);
-    tog.outerHTML = `<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">隐藏</a>]&nbsp;</span>`;
+    if (document.URL.indexOf('//en.wiki') >= 0) {
+        var hide = 'hide';
+    } else {
+        var hide = '隐藏';
+    }
+    tog.outerHTML = '<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">' + hide + '</a>]&nbsp;</span>';
 }
 
 var tog = document.querySelector("#toc .toctitle .togglelink");
 
 var ul = document.querySelector("#toc>ul");
-tog.addEventListener("click", function () {
-    if (ul.style.display === 'none'){
+tog.addEventListener("click", function() {
+    if (ul.style.display === 'none') {
         ul.style.display = 'block';
-    }else{
+    } else {
         ul.style.display = 'none';
     }
 
-    var tog_ ={"hide":"show","show":"hide", "隐藏":"显示","显示":'隐藏'};
+    var tog_ = {
+        "hide": "show",
+        "show": "hide",
+        "隐藏": "显示",
+        "显示": '隐藏'
+    };
     tog.text = tog_[tog.text];
 });
-if (document.body.offsetWidth <= 650){
+if (document.body.offsetWidth <= 650) {
     tog.click();
 }
+
+
+/*a link to zn_cn */
+function link_to_zh_cn() {
+    if (document.URL.indexOf("zh.wikipedia.org") >= 0) {
+        var nodes = document.querySelectorAll("a[href*='/wiki/']");
+        for (var i = 0; i < nodes.length; i++) {
+            var url = decodeURIComponent(nodes[i].href.replace(/\/wiki\//gi, "/zh-hans/"));
+            nodes[i].href = url;
+        }
+        console.log("link to zn_cn ");
+    }
+}
+link_to_zh_cn();
+
+
+/*menu on scroll*/
+window.onscroll = function() {
+    var t = document.documentElement.scrollTop || document.querySelector('#content').scrollTop; //取当前高度
+    //取各个锚点的位置
+    var menu = document.querySelectorAll('div#toc>ul a');
+    var flag = -1;
+    for (var i = 0; i < menu.length; i++) {
+        var ssid = menu[i].href.split('#');
+        ssid = ssid[ssid.length - 1];
+
+        if (document.getElementById(ssid).offsetTop + 200 >= t) {
+            /*menu[i].closest('li').focus();*/
+            flag = i;
+            break;
+        }
+    }
+
+
+    for (var ik = 0; ik < menu.length; ik++) {
+        if (flag == ik) { //找到当前浏览器固定达到的位置所对应的标题
+            menu[ik].style.color = "black"; 
+            menu[ik].style.fontWeight = "bolder";
+            menu[ik].focus();
+            menu[ik].closest('li').style.borderRightStyle = "solid";
+            menu[ik].closest('li').style.borderRightColor = "wheat";
+        } else { //其余标题
+            menu[ik].style.color = "unset";
+            menu[ik].style.fontWeight = "unset"; 
+            menu[ik].closest('li').style.borderRightStyle = "unset";
+            menu[ik].closest('li').style.borderRightColor = "unset";
+        }
+    }
+};
