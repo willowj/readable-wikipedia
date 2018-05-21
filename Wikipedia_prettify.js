@@ -80,6 +80,29 @@ table.infobox {
     margin: auto !important;
 }
 
+#simpleSearch{
+   border :0px !important;
+}
+
+/*vectorTabs*/
+div.vectorTabs span{
+   display: block !important;
+   background-image: unset !important;
+}
+div.vectorTabs{
+   background-image: unset !important;
+}
+div#mw-head div.vectorMenu h3{
+   background-image: unset !important;
+}
+div.vectorTabs ul li{
+   background-image: unset !important;
+}
+div.vectorTabs ul{
+   background-image: unset !important;
+}
+/*vectorTabs*/
+
 #siteNotice {
     text-align: right;
     font-size: 6px;
@@ -93,7 +116,7 @@ h2 {
 }
 
 dl>dd{
-    border-top-style: groove;
+    border-bottom-style: groove;
 }
 
 #mw-page-base {
@@ -343,7 +366,7 @@ div#toc>ul li:focus{
         padding-right: 7em !important;
     }
     #right-navigation{
-        padding-right: 10% !important;
+        padding-right: 8% !important;
             font-size: 8px !important;
     }
     #siteNotice{
