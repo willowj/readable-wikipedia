@@ -11,9 +11,9 @@
 // ==/UserScript==
 
 function GM_addStyle_from_string(str) {
-    var node = document.createElement('style');
-    node.innerHTML = str;
-    document.body.appendChild(node);
+   var node = document.createElement('style');
+   node.innerHTML = str;
+   document.body.appendChild(node);
 }
 
 //var cssSrc = GM_getResourceText ("readableWikipediaCss");
@@ -85,6 +85,7 @@ table.infobox {
     font-size: 6px;
     margin-left: 50%;
     position: absolute;
+
 }
 
 h2 {
@@ -334,15 +335,6 @@ div#toc>ul li:focus{
         padding-right: 7em !important;
 
     }
-
-/*      #info_box {
-        position: absolute;
-        margin-left: 80%;
-        margin-top: 10em;
-        z-index: 1;
-
-        border-collapse: collapse;
-      }*/
     .toc{
         width: 13%;
     }
@@ -355,7 +347,7 @@ div#toc>ul li:focus{
             font-size: 8px !important;
     }
     #siteNotice{
-        padding-right 10em !important;
+        padding-right: 10em !important;
     }
     .infobox {
         margin-left: 2em !important;
@@ -464,9 +456,9 @@ GM_addStyle_from_string(cssSrc);
 //document.getElementById("References").parentNode.nextSibling.nextSibling.style.display = "none";
 var toc = document.querySelector('div#toc');
 if (toc == null) {
-    var toc = document.createElement('div');
-    toc.setAttribute('id', 'toc');
-    toc.setAttribute('class', 'toc');
+   var toc = document.createElement('div');
+   toc.setAttribute('id', 'toc');
+   toc.setAttribute('class', 'toc');
 }
 document.body.insertBefore(toc, document.body.firstElementChild);
 
@@ -476,83 +468,117 @@ document.querySelector('#toc').appendChild(pg);
 
 /*toc toggle*/
 if (!document.querySelector("#toc .toctoggle")) {
-    var tog = document.createElement('span');
-    document.querySelector("#toc .toctitle").appendChild(tog);
-    if (document.URL.indexOf('//en.wiki') >= 0) {
-        var hide = 'hide';
-    } else {
-        var hide = '隐藏';
-    }
-    tog.outerHTML = '<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">' + hide + '</a>]&nbsp;</span>';
+   var tog = document.createElement('span');
+   document.querySelector("#toc .toctitle").appendChild(tog);
+   if (document.URL.indexOf('//en.wiki') >= 0) {
+      var hide = 'hide';
+   } else {
+      var hide = '隐藏';
+   }
+   tog.outerHTML = '<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">' + hide + '</a>]&nbsp;</span>';
 }
 
-var tog = document.querySelector("#toc .toctitle .togglelink");
-
+/*toc show toogle*/
+var togglelink = document.querySelector("#toc .toctitle .togglelink");
 var ul = document.querySelector("#toc>ul");
-tog.addEventListener("click", function() {
-    if (ul.style.display === 'none') {
-        ul.style.display = 'block';
-    } else {
-        ul.style.display = 'none';
-    }
+togglelink.addEventListener("click", function() {
+   if (ul.style.display === 'none') {
+      ul.style.display = 'block';
+   } else {
+      ul.style.display = 'none';
+   }
 
-    var tog_ = {
-        "hide": "show",
-        "show": "hide",
-        "隐藏": "显示",
-        "显示": '隐藏'
-    };
-    tog.text = tog_[tog.text];
+   var tog_ = {
+      "hide": "show",
+      "show": "hide",
+      "隐藏": "显示",
+      "显示": '隐藏'
+   };
+   togglelink.text = tog_[togglelink.text];
 });
+
 if (document.body.offsetWidth <= 650) {
-    tog.click();
+   togglelink.click();
 }
+
+/*var theurl = document.URL;
+var res = theurl.replace(/zh.wikipedia.org\/wiki\//gi, "zh.wikipedia.org/zh-cn/");
+if (res != theurl){
+    window.location.href = (res);
+}*/
+
+
+/*info box right*/
+
+/*var info_box = document.createElement("div");
+info_box.id = 'info_box';
+document.body.insertBefore(info_box, document.querySelector('#content'));
+
+document.querySelectorAll('.infobox').forEach(function (item) {
+    info_box.appendChild(item);
+});
+*/
 
 
 /*a link to zn_cn */
 function link_to_zh_cn() {
-    if (document.URL.indexOf("zh.wikipedia.org") >= 0) {
-        var nodes = document.querySelectorAll("a[href*='/wiki/']");
-        for (var i = 0; i < nodes.length; i++) {
-            var url = decodeURIComponent(nodes[i].href.replace(/\/wiki\//gi, "/zh-hans/"));
-            nodes[i].href = url;
-        }
-        console.log("link to zn_cn ");
-    }
+   if (document.URL.indexOf("zh.wikipedia.org") >= 0) {
+      var nodes = document.querySelectorAll("a[href*='/wiki/']");
+      for (var i = 0; i < nodes.length; i++) {
+         var url = decodeURIComponent(nodes[i].href.replace(/\/wiki\//gi, "/zh-hans/"));
+         nodes[i].href = url;
+      }
+      console.log("link to zn_cn ");
+   }
 }
 link_to_zh_cn();
+
+/*add space betwen cn and eng
+var g1 = /(\w)([\u4e00-\u9fa5])/g;
+var g2 = /([\u4e00-\u9fa5])(\w)/g;
+document.querySelectorAll('p').forEach(function (item) {
+    if (item.innerText) {
+    item.innerText=item.innerText.replace(g1,"$1 $2").replace(g2,"$1 $2");
+    }
+});*/
+
 
 
 /*menu on scroll*/
 window.onscroll = function() {
-    var t = document.documentElement.scrollTop || document.querySelector('#content').scrollTop; //取当前高度
-    //取各个锚点的位置
-    var menu = document.querySelectorAll('div#toc>ul a');
-    var flag = -1;
-    for (var i = 0; i < menu.length; i++) {
-        var ssid = menu[i].href.split('#');
-        ssid = ssid[ssid.length - 1];
+   var t = document.documentElement.scrollTop || document.querySelector('#content').scrollTop; //取当前高度
+   //取各个锚点的位置
+   var menu = document.querySelectorAll('div#toc>ul a');
+   var flag = -1;
+   for (var i = 0; i < menu.length; i++) {
+      var ssid = menu[i].href.split('#');
+      ssid = ssid[ssid.length - 1];
 
-        if (document.getElementById(ssid).offsetTop + 200 >= t) {
-            /*menu[i].closest('li').focus();*/
-            flag = i;
-            break;
-        }
-    }
+      if (document.getElementById(ssid).offsetTop + 200 >= t) {
+         /*menu[i].closest('li').focus();*/
+         flag = i;
+         break;
+      }
+   }
 
 
-    for (var ik = 0; ik < menu.length; ik++) {
-        if (flag == ik) { //找到当前浏览器固定达到的位置所对应的标题
-            menu[ik].style.color = "black"; 
-            menu[ik].style.fontWeight = "bolder";
-            menu[ik].focus();
-            menu[ik].closest('li').style.borderRightStyle = "solid";
-            menu[ik].closest('li').style.borderRightColor = "wheat";
-        } else { //其余标题
-            menu[ik].style.color = "unset";
-            menu[ik].style.fontWeight = "unset"; 
-            menu[ik].closest('li').style.borderRightStyle = "unset";
-            menu[ik].closest('li').style.borderRightColor = "unset";
-        }
-    }
+   for (var ik = 0; ik < menu.length; ik++) {
+      if (flag == ik) { //找到当前浏览器固定达到的位置所对应的标题
+         menu[ik].style.color = "black"; //旗下的a标签里面的内容为红色
+         menu[ik].style.fontWeight = "bolder"; //旗下的a标签里面的内容为红色
+         menu[ik].focus();
+         menu[ik].closest('li').style.borderRightStyle = "solid";
+         menu[ik].closest('li').style.borderRightColor = "wheat";
+      } else { //其余标题
+         //menu[ik].style.color="blue";//旗下的a标签里面的内容为蓝色
+         menu[ik].style.color = "unset";
+         menu[ik].style.fontWeight = "unset"; //旗下的a标签里面的内容为红色
+         menu[ik].closest('li').style.borderRightStyle = "unset";
+         menu[ik].closest('li').style.borderRightColor = "unset";
+      }
+   }
+   /*    if(flag==-1){//如果没有任何一个标题碰到浏览器顶部，那么就认为是现在悬停在第一个标题
+           menu[0].style.color="red";//旗下的a标签里面的内容为红色
+       }*/
+
 };
